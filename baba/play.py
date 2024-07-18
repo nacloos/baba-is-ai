@@ -82,3 +82,14 @@ def play(env, transpose=True, fps=30, zoom=None, callback=None, keys_to_action=N
         clock.tick(fps)
     pygame.quit()
 
+
+if __name__ == "__main__":
+    import argparse
+    from baba import make
+
+    parser = argparse.ArgumentParser(description="Play Baba Is You")
+    parser.add_argument("--env", type=str, default="two_room-break_stop-make_win-distr_obj_rule", help="Environment id")
+    args = parser.parse_args()
+
+    env = make(f"env/{args.env}")
+    play(env)
