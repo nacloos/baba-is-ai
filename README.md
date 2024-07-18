@@ -4,8 +4,7 @@
 <img src="static\logo_dark.png#gh-dark-mode-only" width="400">
 
 <h2>Break the Rules to Beat the Benchmark</h2>
-  
- ---
+
 </div>
 
 <div align="center">
