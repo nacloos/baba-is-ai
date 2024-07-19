@@ -20,13 +20,13 @@ pip install -e .
 ```
 
 ## Usage
-Run this command to play an enviromnent.
-```
+To play an environment, run this command:
+```bash
 python baba/play.py --env two_room-break_stop-make_win
 ```
-The env argument specifies the id of the environment. Use the arrow keys to move the agent.
+The --env argument specifies the ID of the environment. Once the game opens, use the arrow keys to move the agent.
 
-You can also create a gym enviromnent object.
+You can also create a Gym environment object:
 ```python
 import baba
 
@@ -34,13 +34,15 @@ env_id = "two_room-break_stop-make_win"
 env = baba.make(f"env/{env_id}")
 ```
 
-List all available environment ids.
+To list all available environment IDs, run this code:
 ```python
-baba.make("env/*").keys()
+import baba
+
+print(baba.make("env/*").keys())
 ```
 
 ## Citation
-
+If you use this project in your research, please cite:
 ```
 
 ```
