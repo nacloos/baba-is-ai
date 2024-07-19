@@ -29,7 +29,7 @@ python baba/play.py --env two_room-break_stop-make_win
 ```
 The env argument specifies the id of the environment. Once the game open, you can use the arrow keys to move the agent.
 
-You can also create a gym enviromnent object.
+You can also create a gym environment object.
 ```python
 import baba
 
