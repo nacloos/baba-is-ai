@@ -1,17 +1,6 @@
 from collections import defaultdict
 from typing import Iterable
 
-# ruleset = defaultdict(dict)
-#
-# def get_ruleset():
-#     return ruleset
-#
-# def set_ruleset(_ruleset):
-#     global ruleset
-#     ruleset = _ruleset
-
-
-# TODO: use a grammar to extract more complex rules
 def extract_rule(block_list):
     """
     Take a list of blocks and return the rule object and property if these blocks form a valid rule, otherwise
