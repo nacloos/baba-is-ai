@@ -10,6 +10,9 @@
 <div align="center">
 <img src="static\demo.gif" width="300">
 </div>
+<div align="center">
+ <a href="https://arxiv.org/pdf/2407.13729">Paper</a> 
+</div>
 
 
 ## Installation
@@ -44,5 +47,11 @@ print(baba.make("env/*").keys())
 ## Citation
 If you use this project in your research, please cite:
 ```
-
+@inproceedings{
+  cloos2024baba,
+  title={Baba Is AI: Break the Rules to Beat the Benchmark},
+  author={Nathan Cloos and Meagan Jens and Michelangelo Naim and Yen-Ling Kuo and Ignacio Cases and Andrei Barbu and Christopher J Cueva},
+  booktitle={ICML 2024 Workshop on LLMs and Cognition},
+  year={2024}
+}
 ```
