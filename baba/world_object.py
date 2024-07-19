@@ -3,7 +3,6 @@ import math
 import numpy as np
 
 from baba.utils import add_img_text
-# from baba.minigrid import WorldObj, COLORS, OBJECT_TO_IDX, COLOR_TO_IDX
 from baba.rendering import fill_coords, point_in_circle, point_in_rect, point_in_triangle, rotate_fn
 
 
@@ -27,9 +26,6 @@ objects = [
     'baba'
 ]
 
-# TODO: don't add objects to properties otherwise can't differentiate them when extracting ruleset
-# properties.extend(objects)  # an object can also be a property (e.g. ball is key)
-
 name_mapping = {
     'fwall': 'wall',
     'fball': 'ball',
@@ -48,11 +44,7 @@ name_mapping = {
 }
 # by default, add the displayed name is the type of the object
 name_mapping.update({o: o for o in objects if o not in name_mapping})
-
-# TODO: bidirectional dict
 name_mapping_inverted = {v: k for k, v in name_mapping.items()}
-
-
 
 TILE_PIXELS = 32
 
