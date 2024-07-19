@@ -27,7 +27,7 @@ To play an environment, run this command:
 ```bash
 python baba/play.py --env two_room-break_stop-make_win
 ```
-The --env argument specifies the ID of the environment. Once the game opens, use the arrow keys to move the agent.
+The `--env` argument specifies the ID of the environment. Once the game opens, use the arrow keys to move the agent.
 
 You can also create a Gym environment object:
 ```python
