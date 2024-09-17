@@ -82,7 +82,7 @@ ACTIONS = {
     "right": (1, 0)
 }
 
-@register("env.you_win")
+@register("env/you_win")
 class YouWinEnv(BabaIsYouEnv):
     def __init__(self, width=6, height=6, fixed_you=False, **kwargs):
         self.fixed_you = fixed_you
@@ -149,7 +149,7 @@ class YouWinEnv(BabaIsYouEnv):
         self.target_plan = f"goto[{win_obj}]"
 
 
-@register("env.you_win-fixed_you")
+@register("env/you_win-fixed_you")
 class YouWinFixedYouEnv(YouWinEnv):
     def __init__(self, **kwargs):
         super().__init__(fixed_you=True, **kwargs)
@@ -912,18 +912,18 @@ class TwoRoomMakeWallWinEnv(BabaIsYouEnv):
 
 
 if __name__ == "__main__":
-    # env = make("env.goto_win-no_distractor")
-    # env = make("env.make_win-no_distractor_rule")
-    # env = make("env.make_win-no_distractor_obj")
-    # env = make("env.make_win-no_distractor")
-    # env = make("env.make_win-irrelevant_distractor_rule")
+    # env = make("env/goto_win-no_distractor")
+    # env = make("env/make_win-no_distractor_rule")
+    # env = make("env/make_win-no_distractor_obj")
+    # env = make("env/make_win-no_distractor")
+    # env = make("env/make_win-irrelevant_distractor_rule")
 
-    # env = make("env.two_room-goto_win")
-    # env = make("env.two_room-make_win")
-    # env = make("env.two_room-make_win-no_distractor_obj")
-    # env = make("env.two_room-maybe_break_stop-goto_win")
+    # env = make("env/two_room-goto_win")
+    # env = make("env/two_room-make_win")
+    # env = make("env/two_room-make_win-no_distractor_obj")
+    # env = make("env/two_room-maybe_break_stop-goto_win")
 
-    # env = make("env.two_room-break_stop-make_win-no_distractor_obj")
+    # env = make("env/two_room-break_stop-make_win-no_distractor_obj")
 
     # env = make("env/make_win-distr_obj_rule")
     # env = make("env/make_win-distr_obj_rule#no_ball_win")
