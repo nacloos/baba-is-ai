@@ -59,9 +59,9 @@ def break_rule(env, rule, new_pos={}, block_idx=None):
 
     if block_idx is None:
         # pick one block of the rule and displace it
-        block_idx = np.random.choice(len(rule_pos))
+        block_idx = env.np_random.choice(len(rule_pos))
     elif isinstance(block_idx, Iterable):
-        block_idx = block_idx[np.random.choice(len(block_idx))]
+        block_idx = block_idx[env.np_random.choice(len(block_idx))]
 
     p = rule_pos[block_idx]
     env.change_obj_pos(p, new_pos)
@@ -90,7 +90,7 @@ class YouWinEnv(BabaIsYouEnv):
 
     def _gen_grid(self, width, height, params=None):
         # randomly sample the parameters
-        indices = np.random.choice(len(OBJECTS), size=4, replace=False)
+        indices = self.np_random.choice(len(OBJECTS), size=4, replace=False)
         win_obj, you_obj, distractor1, distractor2 = [OBJECTS[i] for i in indices]
 
         self.grid = BabaIsYouGrid(width, height)
@@ -103,7 +103,7 @@ class YouWinEnv(BabaIsYouEnv):
         if not self.fixed_you:
             # randomly sample the positions
             all_pos = [(2, 3), (3, 3), (2, 4), (3, 4)]
-            you_obj_pos = all_pos.pop(np.random.choice(4))
+            you_obj_pos = all_pos.pop(self.np_random.choice(4))
         else:
             you_obj_pos = (2, 3)
             all_pos = [(2, 4), (3, 3), (3, 4)]
@@ -111,12 +111,12 @@ class YouWinEnv(BabaIsYouEnv):
         # make sure the win object is one cell away from the you object
         # e.g. if you object is at (2, 3), win object can be at (2, 4) or (3, 3)
         while True:
-            idx = np.random.choice(3)
+            idx = self.np_random.choice(3)
             win_obj_pos = all_pos[idx]
             if abs(win_obj_pos[0] - you_obj_pos[0]) + abs(win_obj_pos[1] - you_obj_pos[1]) == 1:
                 break
         all_pos.pop(idx)
-        distractor1_pos = all_pos.pop(np.random.choice(2))
+        distractor1_pos = all_pos.pop(self.np_random.choice(2))
         distractor2_pos = all_pos[0]
 
         put_rule(self, you_obj, "you", positions=(1, 1))
@@ -186,15 +186,15 @@ class MakeWinEnv(BabaIsYouEnv):
             # Sample the objects
         if self.color_in_rule:
             # obj1 and obj2 can be of the same type but different colors
-            obj1_idx, obj2_idx, obj3_idx = np.random.choice(len(OBJECTS), size=3, replace=False)
+            obj1_idx, obj2_idx, obj3_idx = self.np_random.choice(len(OBJECTS), size=3, replace=False)
             obj1 = OBJECTS[obj1_idx]
             obj2 = OBJECTS[obj2_idx]
             # obj3 only useful when distractor_rule_block is True and irrelevant_rule_distractor is True
             obj3 = OBJECTS[obj3_idx]
         else:
             # make sure obj1 and obj2 are different object types
-            obj1_name, obj2_name, obj3_name = np.random.choice(len(NAMES), size=3, replace=False)
-            obj1_color, obj2_color, obj3_color = np.random.choice(len(COLORS), size=3, replace=True)
+            obj1_name, obj2_name, obj3_name = self.np_random.choice(len(NAMES), size=3, replace=False)
+            obj1_color, obj2_color, obj3_color = self.np_random.choice(len(COLORS), size=3, replace=True)
             obj1 = (COLORS[obj1_color], NAMES[obj1_name])
             obj2 = (COLORS[obj2_color], NAMES[obj2_name])
             obj3 = (COLORS[obj3_color], NAMES[obj3_name])
@@ -233,7 +233,7 @@ class MakeWinEnv(BabaIsYouEnv):
                 (4, 1), (5, 1), (6, 1),  # top row
                 (6, 1), (6, 2), (6, 3), (6, 4), (6, 5), (6, 6)   # right column
             ]
-            pos = positions[np.random.choice(len(positions))]
+            pos = positions[self.np_random.choice(len(positions))]
 
             if self.irrelevant_rule_distractor:
                 # add a rule block that is different from obj1 and obj2
@@ -413,15 +413,15 @@ class TwoRoomEnv(BabaIsYouEnv):
         # Sample the objects
         if self.color_in_rule:
             # obj1 and obj2 can be of the same type but different colors
-            obj1_idx, obj2_idx, obj3_idx = np.random.choice(len(OBJECTS), size=3, replace=False)
+            obj1_idx, obj2_idx, obj3_idx = self.np_random.choice(len(OBJECTS), size=3, replace=False)
             obj1 = OBJECTS[obj1_idx]
             obj2 = OBJECTS[obj2_idx]
             # obj3 only useful when distractor_rule_block is True and irrelevant_rule_distractor is True
             obj3 = OBJECTS[obj3_idx]
         else:
             # make sure obj1 and obj2 are different object types
-            obj1_name, obj2_name, obj3_name = np.random.choice(len(NAMES), size=3, replace=False)
-            obj1_color, obj2_color, obj3_color = np.random.choice(len(COLORS), size=3, replace=True)
+            obj1_name, obj2_name, obj3_name = self.np_random.choice(len(NAMES), size=3, replace=False)
+            obj1_color, obj2_color, obj3_color = self.np_random.choice(len(COLORS), size=3, replace=True)
             obj1 = (COLORS[obj1_color], NAMES[obj1_name])
             obj2 = (COLORS[obj2_color], NAMES[obj2_name])
             obj3 = (COLORS[obj3_color], NAMES[obj3_name])
@@ -452,7 +452,7 @@ class TwoRoomEnv(BabaIsYouEnv):
                 # add distractor rule block for the other object
                 # but place it such that it is impossible to make the obj2 win
                 positions = self.positions["right_unpushable"]
-                pos = positions[np.random.choice(len(positions))]
+                pos = positions[self.np_random.choice(len(positions))]
                 put_obj(self, RuleObject(obj2[1]), pos)
             else:
                 # don't need to be unpushable because obj2 is not in the env
@@ -735,15 +735,15 @@ class TwoRoomMakeYouEnv(BabaIsYouEnv):
         # Sample the objects
         if self.color_in_rule:
             # obj1 and obj2 can be of the same type but different colors
-            obj1_idx, obj2_idx, obj3_idx = np.random.choice(len(OBJECTS), size=3, replace=False)
+            obj1_idx, obj2_idx, obj3_idx = self.np_random.choice(len(OBJECTS), size=3, replace=False)
             obj1 = OBJECTS[obj1_idx]
             obj2 = OBJECTS[obj2_idx]
             # obj3 only useful when distractor_rule_block is True and irrelevant_rule_distractor is True
             obj3 = OBJECTS[obj3_idx]
         else:
             # make sure obj1 and obj2 are different object types
-            obj1_name, obj2_name, obj3_name = np.random.choice(len(NAMES), size=3, replace=False)
-            obj1_color, obj2_color, obj3_color = np.random.choice(len(COLORS), size=3, replace=True)
+            obj1_name, obj2_name, obj3_name = self.np_random.choice(len(NAMES), size=3, replace=False)
+            obj1_color, obj2_color, obj3_color = self.np_random.choice(len(COLORS), size=3, replace=True)
             obj1 = (COLORS[obj1_color], NAMES[obj1_name])
             obj2 = (COLORS[obj2_color], NAMES[obj2_name])
             obj3 = (COLORS[obj3_color], NAMES[obj3_name])
@@ -871,8 +871,8 @@ class TwoRoomMakeWallWinEnv(BabaIsYouEnv):
         self.grid.vert_wall(width // 2, 1, height - 2, obj_type=lambda: make_obj("wall"))
 
         # Sample the objects
-        obj1_name, obj2_name, obj3_name = np.random.choice(len(NAMES), size=3, replace=False)
-        obj1_color, obj2_color, obj3_color = np.random.choice(len(COLORS), size=3, replace=True)
+        obj1_name, obj2_name, obj3_name = self.np_random.choice(len(NAMES), size=3, replace=False)
+        obj1_color, obj2_color, obj3_color = self.np_random.choice(len(COLORS), size=3, replace=True)
         obj1 = (COLORS[obj1_color], NAMES[obj1_name])
         obj2 = (COLORS[obj2_color], NAMES[obj2_name])
         obj3 = (COLORS[obj3_color], NAMES[obj3_name])
@@ -889,7 +889,7 @@ class TwoRoomMakeWallWinEnv(BabaIsYouEnv):
                 # add distractor rule block for the other object
                 # but place it such that it is impossible to make the obj2 win
                 positions = self.positions["right_unpushable"]
-                pos = positions[np.random.choice(len(positions))]
+                pos = positions[self.np_random.choice(len(positions))]
                 put_obj(self, RuleObject(obj2[1]), pos)
             else:
                 # don't need to be unpushable because obj2 is not in the env
@@ -899,7 +899,7 @@ class TwoRoomMakeWallWinEnv(BabaIsYouEnv):
         if self.break_stop_rule:
             break_rule(self, ("wall", "stop"), new_pos=self.left_pushable, block_idx=[1, 2])
 
-        new_pos = self.positions["right_unpushable"][np.random.choice(len(self.positions["right_unpushable"]))]
+        new_pos = self.positions["right_unpushable"][self.np_random.choice(len(self.positions["right_unpushable"]))]
         break_rule(self, (obj1[1], "win"), new_pos=new_pos, block_idx=0)
 
         # Place the objects and agent in the rooms

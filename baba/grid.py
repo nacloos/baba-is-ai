@@ -80,13 +80,17 @@ DIR_TO_VEC = [
 ]
 
 
-def rand_int(low, high):
+def rand_int(np_random, low, high):
     """
-    Generate random integer in [low,high[
+    Generate random integer in [low,high[ using the given seeded RNG
+
+    np_random is a np.random.Generator on gym>=0.22, but a legacy
+    np.random.RandomState on gym==0.21 (which only exposes randint, not
+    integers), so support both.
     """
-    # TODO: seed
-    # return np_random.integers(low, high)
-    return np.random.randint(low, high)
+    if hasattr(np_random, "integers"):
+        return np_random.integers(low, high)
+    return np_random.randint(low, high)
 
 
 class BabaIsYouGrid:
@@ -462,18 +466,33 @@ class BabaIsYouEnv(gym.Env):
         self._ruleset = {}
         self.default_ruleset = kwargs.get('default_ruleset', {})
 
+        # Environment-specific seeded RNG, lazily initialized (see np_random property below)
+        self._np_random = None
+
         # TODO: why reset here?
         # self.reset()
 
     def get_ruleset(self):
         return self._ruleset
 
+    @property
+    def np_random(self) -> np.random.Generator:
+        """
+        Environment-specific seeded RNG. Normally initialized by gym's
+        Env.reset(seed=...), but some supported gym versions (e.g. 0.21) don't
+        implement that, so fall back to gym's own seeding utility explicitly.
+        """
+        if self._np_random is None:
+            self._np_random, _ = seeding.np_random()
+        return self._np_random
+
     def reset(self, *, seed=None, return_info=False, options=None):
         try:
             super().reset(seed=seed)
         except TypeError:
-            # gym==0.21 reset not implemented in gym.Env
-            pass
+            # gym==0.21 reset not implemented in gym.Env / doesn't seed np_random
+            if seed is not None:
+                self._np_random, _ = seeding.np_random(seed)
 
         # Current position and direction of the agent
         self.agent_pos = None
@@ -613,8 +632,8 @@ class BabaIsYouEnv(gym.Env):
 
             pos = np.array(
                 (
-                    rand_int(top[0], min(top[0] + size[0], self.grid.width)),
-                    rand_int(top[1], min(top[1] + size[1], self.grid.height)),
+                    rand_int(self.np_random, top[0], min(top[0] + size[0], self.grid.width)),
+                    rand_int(self.np_random, top[1], min(top[1] + size[1], self.grid.height)),
                 )
             )
 
@@ -677,7 +696,7 @@ class BabaIsYouEnv(gym.Env):
         self.agent_pos = pos
 
         if rand_dir:
-            self.agent_dir = rand_int(0, 4)
+            self.agent_dir = rand_int(self.np_random, 0, 4)
 
         return pos
 
