@@ -13,6 +13,9 @@ setup(
         "typing_extensions",
         "pygame"
     ],
+    extras_require={
+        "test": ["pytest"],
+    },
     description='',
     author=''
 )
